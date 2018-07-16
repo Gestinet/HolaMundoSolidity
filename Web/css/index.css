@@ -1,0 +1,20 @@
+p{
+    color:#006699;
+    font-size:12px;
+}
+
+p.compteC{
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size:17px;
+    color:#000000;
+}
+*{
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+h1{
+    font-size:25px;
+}
+.und{
+    text-decoration:underline;
+    font-size:11px;
+}

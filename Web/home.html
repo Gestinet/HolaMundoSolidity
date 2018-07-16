@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+                <title>GESTITOKEN SUPREMO</title>
+                <link rel="stylesheet" type="text/css" href="css/index.css">
+                <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                <script src="moduls/node_modules/web3/dist/web3.min.js"></script>
+                <script language="javascript" type="text/javascript" src="js/gestiTokenABI.js"></script>
+        </head>
+        <body>
+                <h1>RECORDEU SELECCIONAR LA XARXA ROPSTEN</h1>   
+                <p class="compteC" >ID Compte: </p>
+
+                <h1>Comprar GestiToken</h1>                                                        
+                <label for="quantitatC" class="col-lg-2 control-label">Ethers </label>
+                <input id="quantitatC" type="number">
+                <button id="comprar">Comprar</button>                
+                
+                <h1>Vendre GestiToken</h1>                
+
+                Quantitat a vendre
+                <input type="text" name="quantitat"><br>                        
+                <button id="vendre">Vendre</button>  
+
+                <marquee>Hello world!</marquee>
+                <p class="und" id="und">Gracias por contratar nuestros servicios.</p>
+                <p>0x4Cc89dc9fAf58b4D5F9a4ebA0934039baFe1E90a</p>
+                <p>0xc286027D5dBC47bCe859c5dE00cf113816D268a9</p>
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+                <script>
+                        //Variables
+                        //Relacionades amb el Token
+                        var gestiToken;
+                        var gestiTokenAdreca;
+                        
+                        //Relacionades amb el compte usuari
+                        var userAccount;                   
+                        
+                        //Relacionades amb la gestió de les transaccions     
+                        var handleReceipt;                        
+
+                        //Funció a executar quan s'inicia el programa
+                        function initApp() {
+                                //Adreça contracte gestiToken
+                                gestiTokenAdreca = "0x4cc89dc9faf58b4d5f9a4eba0934039bafe1e90a";
+
+                                //ABI gestiToken, té les funcions del contracte
+                                var gestiTokenAbi = new web3js.eth.contract([{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"tokens","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"startDate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokens","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"_totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"bonusEnds","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenOwner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokens","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"endDate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"tokens","type":"uint256"},{"name":"data","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"tokenAddress","type":"address"},{"name":"tokens","type":"uint256"}],"name":"transferAnyERC20Token","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"tokenOwner","type":"address"},{"name":"spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"tokens","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"tokenOwner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"tokens","type":"uint256"}],"name":"Approval","type":"event"}]);
+                                
+                                //Inicialització del contracte complert
+                                gestiToken = gestiTokenAbi.at(gestiTokenAdreca);                                
+
+                                //Funció que va comprovant si l'usuari canvia el compte de MetaMask
+                                var accountInterval = setInterval(function() {
+                                        //Comprovem si l'usuari ha canviat el compte
+                                        if (web3.eth.accounts[0] !== userAccount) {
+
+                                                //Canviem compte usuari        
+                                                userAccount = web3.eth.accounts[0];
+
+                                                //Canviem display del compte
+                                                var text_label = $(this).find('compteC').text();
+                                                $('.compteC').html($('.compteC').html() + text_label + userAccount);
+                                        }
+                                //Cada quan comprovar si s'ha canviat el compte (ms)
+                                }, 1000);
+
+                                //Definim la funció que gestiona el estat de la transacció en cas de que funcioni o falli.
+                                handleReceipt = (error, receipt) => {
+                                        if (error){
+                                                //La transacció ha fallat
+                                                console.error(error);
+                                                $("#und").text("ERROR");                                                
+                                        }
+                                        else {
+                                                //La transacció ha funcionat
+                                                console.log(receipt);   
+                                                $("#und").text("TOKENS COMPRATS");                                             
+                                          }                     
+                                }
+                        }
+
+                        //Funció que compra els Tokens
+                        function comprarToken() {                                
+                                
+                                //////////////////////////////////////////////////////////////////////////////////////////
+                                //EL CODI SEGÜENT ES FA SERVIR SI EL CONTRACTE TÉ UNA FUNCIÓ ESPECÍFICA PER TRANSACCIONS//
+                                //////////////////////////////////////////////////////////////////////////////////////////
+
+                                // Send the tx to our contract:
+                                /*return gestiToken.
+                                .transfer(userAccount, window.web3.toWei(0.001, "ether"))                                
+                                .on("receipt", function(receipt) {
+                                        $("#txStatus").text("SUCCESS");                                                                
+                                })
+                                .on("error", function(error) {                                
+                                        // Do something to alert the user their transaction has failed
+                                        $("#txStatus").text(error);
+                                });*/
+                                                                                                                        
+                                ////////////////////////////////////////////////////////////////////////////////////////////
+
+                                //////////////////////////////////////////////////////////////////
+                                //EL CODI SEGÜENT SERVEIX PER ENVIAR UNA TRANSACCIÓ AL CONTRACTE//
+                                //////////////////////////////////////////////////////////////////
+                                
+                                //Canviem text per informar a l'usuari.
+                                $("#und").text("Comprant tokens...");
+                                
+                                //Creem i enviem transacció
+                                web3.eth.sendTransaction({
+                                        //Compte origen transacció (usuari)
+                                        from: userAccount,
+                                        //Adreça contracte GestiToken
+                                        to: gestiTokenAdreca,
+                                        //Valor de la transacció. Passar a Wei (10¹⁸ ETHERS)
+                                        value: window.web3.toWei(parseFloat(document.getElementById("quantitatC").value), "ether")
+                                }, handleReceipt);
+                                
+                        }    
+
+                        //Funció que ven/retorna Tokens
+                        function vendreToken() {                                
+                                
+                                //////////////////////////////////////////////////////////////////////////////////////////
+                                //EL CODI SEGÜENT ES FA SERVIR SI EL CONTRACTE TÉ UNA FUNCIÓ ESPECÍFICA PER TRANSACCIONS//
+                                //////////////////////////////////////////////////////////////////////////////////////////
+
+                                // Send the tx to our contract:
+                                return gestiToken
+                                .transferFrom("0x672Aaa7ab3A8E621Eb6C6Bbe5E3cE11C61262Ef3", userAccount, window.web3.toWei(0.001, "ether"))                                
+                                .on("receipt", function(receipt) {
+                                        $("#txStatus").text("SUCCESS");                                                                
+                                })
+                                .on("error", function(error) {                                
+                                        // Do something to alert the user their transaction has failed
+                                        $("#txStatus").text(error);
+                                });
+                                                                                                                        
+                                ////////////////////////////////////////////////////////////////////////////////////////////
+
+                                //////////////////////////////////////////////////////////////////
+                                //EL CODI SEGÜENT SERVEIX PER ENVIAR UNA TRANSACCIÓ AL CONTRACTE//
+                                //////////////////////////////////////////////////////////////////
+                                
+                                //Canviem text per informar a l'usuari.
+                                $("#und").text("Venent tokens...");
+                                
+                                //Creem i enviem transacció
+                                web3.eth.sendTransaction({
+                                        //Compte origen transacció (usuari)
+                                        from: userAccount,
+                                        //Adreça contracte GestiToken
+                                        to: gestiTokenAdreca,
+                                        //Valor de la transacció. Passar a Wei (10¹⁸ ETHERS)
+                                        value: window.web3.toWei(parseFloat(document.getElementById("quantitatC").value), "ether")
+                                }, handleReceipt);
+                                
+                        }                                            
+                        
+                        //Coses a executar quan la pàgina és carregada
+                        window.addEventListener('load', function() {
+                                //Comprovem si web3 està definit. MetaMask ja té una variable web3 definida, per tant, la podem fer servir per interactuar amb la xarxa
+                                if (typeof web3 !== 'undefined') {                                
+                                        //Obtenim proveïdor (xarxa) MetaMask.
+                                        web3js = new Web3(web3.currentProvider);                                        
+                                } else {
+                                        //L'usuari no té MetaMask instal·lat.
+                                        alert("Necessites METAMASK!");
+                                        console.log("Segon");
+                                } 
+
+                                //Inicialitzar variables i altres coses
+                                initApp()
+                        })
+
+                        //OnClickListener del botó comprar, compra GestiTokens.
+                        $("#comprar").click(function() {
+                                comprarToken();
+                        });
+                                  
+                        $("#vendre").click(function() {
+                                vendreToken();
+                        });                                  
+                </script>
+        </body>
+</html>
